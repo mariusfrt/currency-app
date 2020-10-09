@@ -1,7 +1,7 @@
 Currency App
 
 
-##Installation Notes
+#Installation Notes
 
 ###### ANDROID
 
