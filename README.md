@@ -1,6 +1,3 @@
-Currency App
-
-
 #Installation Notes
 
 ###### ANDROID
