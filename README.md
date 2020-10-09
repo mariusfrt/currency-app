@@ -2,11 +2,11 @@
 
 ###### ANDROID
 
-yarn 
-react-native run-android
+- yarn 
+- react-native run-android
 
 
 ###### iOS
-yarn 
-pod install
-react-native run-ios
+- yarn 
+- pod install
+- react-native run-ios
