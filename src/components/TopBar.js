@@ -26,7 +26,7 @@ export default class TopBar extends PureComponent {
       const bgRefreshIndicator = loadingHistory ? <ActivityIndicator size="small" color={colors.loadingIndicator} /> : null;
       const offlineIndicator = isOffline ? <Icon name={'cloud-offline-outline'} style={styles.offlineIcon} /> : null;
       const syncDate = isOffline ? moment(lastSyncDate) : moment();
-      const lastUpdate = `LastSync: ${syncDate.format('DD MMM')} @ ${syncDate.format('HH:MM:ss')}`;
+      const lastUpdate = `LastSync: ${syncDate.format('DD MMM')} @ ${syncDate.format('hh:mm:ss')}`;
 
       return <View style={styles.container}>
         <View style={styles.leftSideControls}>
