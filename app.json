@@ -1,0 +1,5 @@
+{
+  "name": "RoWebCurrencyApp",
+  "displayName": "RoWebCurrencyApp",
+  "currencyBaseUrl":"https://api.exchangeratesapi.io"
+}
