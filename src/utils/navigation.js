@@ -18,9 +18,9 @@ export const navigateTo = (screen: string) => {
     component: {
       id:screen,
       name: screen,
-    }
+    },
   })
- }
+ };
 
 const rehydrateStore = (storeToHydrate: any) => (
   new Promise((resolve) => {
@@ -28,7 +28,7 @@ const rehydrateStore = (storeToHydrate: any) => (
       resolve()
     })
   })
-)
+);
 
 const setupTabNavigationLayout = async () => {
   const tabIcons = await Promise.all([
@@ -86,69 +86,82 @@ const setupTabNavigationLayout = async () => {
       }
     }
   });
+
   await Promise.all([rehydrateStore(store)])
+
   const promise = new Promise((resolve) => {
     Navigation.setRoot({
       root: {
-        stack: {
+        sideMenu:{
           id: NAV_BASE_STACK,
-          children: [{
+          right: {
+            component: {
+              name: SCREEN_COMPONENTS.SETTINGS
+            }
+          },
+          center:{
             bottomTabs: {
-              children: [{
+              children: [
+                {
                   stack: {
-                    children: [{
-                      component: {
-                        name: SCREEN_COMPONENTS.HOME
-                      }
-                    }, ],
-                    options: {
-                      topBar: {
-                        visible: true,
-                        drawBehind: false,
-                        title: {
-                          component: {
-                            name: SCREEN_COMPONENTS.TOPBAR,
-                            alignment: 'center',
+                    children: [
+                      {
+                        component: {
+                          name: SCREEN_COMPONENTS.HOME,
+                          id:SCREEN_COMPONENTS.HOME,
+                          options: {
+                            topBar: {
+                              title: {
+                                component: {
+                                  name: SCREEN_COMPONENTS.TOPBAR,
+                                  alignment: 'center',
+                                },
+                              },
+                            },
+                            bottomTab: {
+                              text: 'Home',
+                              icon: tabIcons[0],
+                              fontWeight: 'bold'
+                            }
                           },
-                        },
+                        }
                       },
-                      bottomTab: {
-                        text: 'Home',
-                        icon: tabIcons[0],
-                        fontWeight: 'bold'
-                      }
-                    },
+                      
+                    ]
                   }
                 },
                 {
                   stack: {
-                    children: [{
-                      component: {
-                        name: SCREEN_COMPONENTS.HISTORY
-                      }
-                    }],
-                    options: {
-                      topBar: {
-                        visible: true,
-                        drawBehind: false,
-                        title: {
-                          component: {
-                            name: SCREEN_COMPONENTS.TOPBAR,
-                            alignment: 'center',
+                    
+                    id: SCREEN_COMPONENTS.HISTORY,
+                    children: [
+                      {
+                        component: {
+                          name: SCREEN_COMPONENTS.HISTORY,
+                          id: SCREEN_COMPONENTS.HISTORY,
+                          options: {
+                            topBar: {
+                              title: {
+                                component: {
+                                  name: SCREEN_COMPONENTS.TOPBAR,
+                                  alignment: 'center',
+                                },
+                              },
+                            },
+                            bottomTab: {
+                              text: 'History',
+                              icon: tabIcons[1],
+                              fontWeight: 'bold'
+                            }
                           },
-                        },
-                      },
-                      bottomTab: {
-                        text: 'History',
-                        icon: tabIcons[1],
-                        fontWeight: 'bold'
+                        }
                       }
-                    },
+                    ]
                   }
                 }
               ]
             }
-          }]
+          }
         }
       }
     });
@@ -198,6 +211,16 @@ export const setNavigationTitle = (componentId, title) => {
       }
     }
   );
+}
+
+export const toggleSettingsMenu = (visible) => {
+  Navigation.mergeOptions(SCREEN_COMPONENTS.HOME,{
+    sideMenu:{
+      right:{
+        visible
+      }
+    }
+  })
 }
 
 export const bindNavigationEvents = component => Navigation.events().bindComponent(component);

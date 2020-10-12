@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   settingsColumn: {
-    marginTop: 30,
+    marginTop: 10,
     marginHorizontal: 10
   },
   settingsLabel: {

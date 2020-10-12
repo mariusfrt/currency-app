@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Dimensions, Platform } from 'react-native';
 import { colors } from '../theme/theme.style';
 import IconButton from '../components/IconButton';
 import Icon from "react-native-vector-icons/Ionicons";
-import { navigateTo } from '../utils/navigation';
-import { SCREEN_COMPONENTS } from '../utils/constants';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { toggleSettingsMenu } from '../utils/navigation';
 
+const screenWidth = Dimensions.get("window").width;
 
 @connect(state => ({
   loadingHistory: state.ui.isCurrencyHistoryLoading,
@@ -16,11 +16,21 @@ import moment from 'moment';
 }),
 dispatch => ({}))
 export default class TopBar extends PureComponent {
-  
-  goToSettings = () => {
-    navigateTo(SCREEN_COMPONENTS.SETTINGS)
+
+  constructor(props) {
+    super(props); 
+    this.state = {
+      showSettingsMenu: false
+    };
   }
-  
+  toggleMenu = () => {
+    const showSettingsMenu = !this.state.showSettingsMenu;
+    this.setState({
+      showSettingsMenu
+    });
+    toggleSettingsMenu(Platform.OS === 'ios' ? showSettingsMenu : true);
+  }
+
   render() {
       const { isOffline, loadingHistory, lastSyncDate } = this.props;
       const bgRefreshIndicator = loadingHistory ? <ActivityIndicator size="small" color={colors.loadingIndicator} /> : null;
@@ -32,11 +42,11 @@ export default class TopBar extends PureComponent {
         <View style={styles.leftSideControls}>
           <Text style={styles.headerText}>{'Currency App'}</Text>
           <Text style={styles.lastUpdateText}>{lastUpdate}</Text>
-         </View>
-         <View style={styles.rightSideControls}>
-           {bgRefreshIndicator}
-           {offlineIndicator}
-          <IconButton onClick={this.goToSettings} icon="settings-outline" iconStyle={styles.settingsIcon}/>
+        </View>
+        <View style={styles.rightSideControls}>
+          {bgRefreshIndicator}
+          {offlineIndicator}
+          <IconButton onClick={this.toggleMenu} icon="settings-outline" iconStyle={styles.settingsIcon}/>
          </View>
       </View>
   }
@@ -44,7 +54,7 @@ export default class TopBar extends PureComponent {
 
 const styles = StyleSheet.create({
   container:{
-    flex: 1,
+    width: screenWidth-30,
     flexDirection: 'row',
     justifyContent:'space-between',
     alignItems: 'center',

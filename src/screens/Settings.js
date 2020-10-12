@@ -1,5 +1,6 @@
 
 import React, { PureComponent } from 'react';
+import { StatusBar } from 'react-native';
 import SettingsContainer from '../components/SettingsContainer';
 import withTheme from '../components/decorators/withTheme';
 import { setNavigationTitle } from '../utils/navigation';
@@ -22,6 +23,7 @@ dispatch => ({
   onSetSelectedTimeInterval: value => dispatch(setSelectedTimeInterval(value)),
 }))
 class Settings extends PureComponent {
+
   componentDidMount() {
     setNavigationTitle(this.props.componentId, 'Settings')
   }
@@ -46,13 +48,21 @@ class Settings extends PureComponent {
       value: selectedBaseCurrency,
     });
 
-    return <SettingsContainer 
-              baseCurrencyList={baseCurrencyList} 
-              selectedBaseCurrency={selectedBaseCurrency}
-              selectedTimeInterval={selectedTimeInterval}
-              onSelectedBaseCurrencyChange={onSetSelectedBaseCurrency}
-              onSelectedTimeIntervalChange={onSetSelectedTimeInterval}
-            />
+    const statusBar = Platform.OS === 'ios' ? <StatusBar hidden/> : null;
+
+    return (
+      <>
+        {statusBar}
+        <SettingsContainer 
+                baseCurrencyList={baseCurrencyList} 
+                selectedBaseCurrency={selectedBaseCurrency}
+                selectedTimeInterval={selectedTimeInterval}
+                onSelectedBaseCurrencyChange={onSetSelectedBaseCurrency}
+                onSelectedTimeIntervalChange={onSetSelectedTimeInterval}
+              />
+      </>
+    )
+   
   }  
 };
 
