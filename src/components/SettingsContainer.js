@@ -3,11 +3,14 @@ import {
   StyleSheet,
   View,
   Text,
-  FlatList
+  FlatList,
+  Platform
 } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { commonStyles, colors} from '../theme/theme.style';
+import Icon from "react-native-vector-icons/Ionicons";
 
+const dropDownHeight = 40;
 
 export default class SettingsContainer extends PureComponent { 
   constructor(props){
@@ -45,34 +48,34 @@ export default class SettingsContainer extends PureComponent {
 
       return (
         <View style={[commonStyles.fill, styles.container]}>
-          <View style={[commonStyles.fill,styles.settingsColumn]}>
-            <Text style={styles.settingsLabel}>{'Refresh Interval'}</Text>
-            <DropDownPicker
-              items={refreshTimeItems}
-              defaultValue={selectedTimeInterval}
-              containerStyle={{height: 40}}
-              style={{backgroundColor: '#fafafa'}}
-              itemStyle={{
-                  justifyContent: 'flex-start'
-              }}
-              dropDownStyle={{backgroundColor: '#fafafa'}}
-              onChangeItem={item => this.selectedTimeIntervalChanged(item.value)}
-          />
+          <View style={[commonStyles.row, styles.titleContainer]}>
+            {Platform.OS === 'android' && <Icon name={'settings-outline'} style={styles.iconStyle} />}
+            <Text style={styles.settingsTitle}>{'Settings'}</Text>
           </View>
-          <View style={[commonStyles.fill, styles.settingsColumn]}> 
-            <Text style={styles.settingsLabel}>{'Base Currency'}</Text>
-            <DropDownPicker
-              items={baseCurrencyItems}
-              defaultValue={this.state.selectedBaseCurrency}
-              containerStyle={{height: 40}}
-              style={{backgroundColor: '#fafafa'}}
-              itemStyle={{
-                  justifyContent: 'flex-start'
-              }}
-              dropDownStyle={{backgroundColor: '#fafafa'}}
-              onChangeItem={item => this.selectedBaseCurrencyChanged(item.value)}
-          />
-          </View>
+            <View style={[styles.settingsColumn]}>
+              <Text style={styles.settingsLabel}>{'Refresh Interval'}</Text>
+              <DropDownPicker
+                items={refreshTimeItems}
+                defaultValue={selectedTimeInterval}
+                containerStyle={{height: dropDownHeight}}
+                style={styles.dropDownBg}
+                itemStyle={styles.dropDownItem}
+                dropDownStyle={styles.dropDownBg}
+                onChangeItem={item => this.selectedTimeIntervalChanged(item.value)}
+            />
+            </View> 
+            <View style={[styles.settingsColumn,{marginTop:dropDownHeight * refreshTimeItems.length}]}> 
+              <Text style={styles.settingsLabel}>{'Base Currency'}</Text>
+              <DropDownPicker
+                items={baseCurrencyItems}
+                defaultValue={this.state.selectedBaseCurrency}
+                containerStyle={{height: dropDownHeight}}
+                style={styles.dropDownBg}
+                itemStyle={styles.dropDownItem}
+                dropDownStyle={styles.dropDownBg}
+                onChangeItem={item => this.selectedBaseCurrencyChanged(item.value)}
+            />
+            </View>
         </View>
       )
     }
@@ -80,20 +83,46 @@ export default class SettingsContainer extends PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start'
   },
   settingsColumn: {
-    marginTop: 10,
-    marginHorizontal: 10
+    marginTop: 20,
+    marginHorizontal: 10,
+    position: 'relative'
   },
   settingsLabel: {
     color: colors.textPrimary,
     fontSize: 18,
     fontWeight: 'bold',
-    paddingBottom: 10
+    paddingBottom: 10,
+  },
+  titleContainer:{
+    alignItems:'center',
+    marginTop: Platform.OS === 'android' ? 30 : 0,
+    marginBottom: 30,
+    marginLeft: Platform.OS === 'ios' ? 10 : 0
+  },
+  settingsTitle:{
+    color: colors.textPrimary,
+    fontSize: 35,
+    fontWeight: 'bold',
+    paddingBottom: 10,
+    textAlign:'center'
+  },
+  dropDownBg: {
+    backgroundColor: '#fafafa'
+  },
+  dropDownItem: {
+    justifyContent: 'flex-start'
+  },
+  iconStyle:{
+    fontSize: 25,
+    alignSelf: 'baseline',
+    color: colors.textPrimary,
+    borderRadius: 10,
+    padding: 10,
   }
 });
 

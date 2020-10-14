@@ -19,16 +19,9 @@ export default class TopBar extends PureComponent {
 
   constructor(props) {
     super(props); 
-    this.state = {
-      showSettingsMenu: false
-    };
   }
   toggleMenu = () => {
-    const showSettingsMenu = !this.state.showSettingsMenu;
-    this.setState({
-      showSettingsMenu
-    });
-    toggleSettingsMenu(Platform.OS === 'ios' ? showSettingsMenu : true);
+    toggleSettingsMenu(true);
   }
 
   render() {
